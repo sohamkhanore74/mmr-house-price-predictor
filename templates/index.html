@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MMR House Price Predictor</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="card">
+    <h1>MMR House Price Predictor</h1>
+    <p class="subtitle">Estimate flat prices across the Mumbai Metropolitan Region</p>
+
+    <form id="predict-form">
+      <div class="grid">
+        <label>Location
+          <select name="location">
+            {% for loc in locations %}<option value="{{ loc }}">{{ loc }}</option>{% endfor %}
+          </select>
+        </label>
+
+        <label>Area (sq ft)
+          <input type="number" name="area_sqft" value="650" min="100" step="1">
+        </label>
+
+        <label>BHK
+          <select name="bhk">
+            <option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option>
+          </select>
+        </label>
+
+        <label>Bathrooms
+          <input type="number" name="bathroom" value="2" min="1" step="1">
+        </label>
+
+        <label>Balconies
+          <input type="number" name="balcony" value="1" min="0" step="1">
+        </label>
+
+        <label>Floor number
+          <input type="number" name="floor_no" value="5" min="0" step="1">
+        </label>
+
+        <label>Total floors
+          <input type="number" name="total_floors" value="15" min="1" step="1">
+        </label>
+
+        <label>Parking spots
+          <input type="number" name="parking" value="1" min="0" step="1">
+        </label>
+
+        <label>Furnishing
+          <select name="furnishing">
+            {% for f in furnishings %}<option {% if f=="Semi-Furnished" %}selected{% endif %}>{{ f }}</option>{% endfor %}
+          </select>
+        </label>
+
+        <label>Transaction
+          <select name="transaction">
+            {% for t in transactions %}<option {% if t=="Resale" %}selected{% endif %}>{{ t }}</option>{% endfor %}
+          </select>
+        </label>
+
+        <label>Facing
+          <select name="facing">
+            {% for f in facings %}<option {% if f=="Not specified" %}selected{% endif %}>{{ f }}</option>{% endfor %}
+          </select>
+        </label>
+
+        <label>Ownership
+          <select name="ownership">
+            {% for o in ownerships %}<option {% if o=="Freehold" %}selected{% endif %}>{{ o }}</option>{% endfor %}
+          </select>
+        </label>
+      </div>
+
+      <button type="submit">Predict price</button>
+    </form>
+
+    <div id="result" class="result hidden">
+      <div class="price" id="price-value"></div>
+      <div class="range" id="range-value"></div>
+    </div>
+    <div id="error" class="error hidden"></div>
+
+    <p class="note">Model's typical error is about 14%, so treat this as a ballpark estimate, not a valuation.</p>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
